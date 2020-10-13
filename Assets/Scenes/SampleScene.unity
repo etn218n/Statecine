@@ -1110,7 +1110,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundSensor: {fileID: 1159234119}
   RunSpeed: 4
-  RollSpeed: 20
+  RollSpeed: 12
+  SprintSpeed: 7
   CrouchSpeed: 1.5
   JumpForce: 20
 --- !u!114 &2090267053
