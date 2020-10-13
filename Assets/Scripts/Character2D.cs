@@ -36,10 +36,12 @@ public class Character2D : MonoBehaviour
     private int sprintHashID = Animator.StringToHash("Adventurer Sprint");
     private int jumpHashID   = Animator.StringToHash("Adventurer Jump");
     private int fallHashID   = Animator.StringToHash("Adventurer Fall");
+    private int getupHashID  = Animator.StringToHash("Adventurer Get Up");
     private int deadHashID   = Animator.StringToHash("Adventurer Dead");
     
     private int crouchHashID     = Animator.StringToHash("Adventurer Crouch");
     private int crouchWalkHashID = Animator.StringToHash("Adventurer Crouch Walk");
+    private int knockdownHashID  = Animator.StringToHash("Adventurer Knock Down");
     
     private int attack1HashID = Animator.StringToHash("Adventurer Attack1");
     private int attack2HashID = Animator.StringToHash("Adventurer Attack2");
@@ -64,11 +66,13 @@ public class Character2D : MonoBehaviour
     public void PlayRollAnimation()   => anim.Play(rollHashID);
     public void PlaySprintAnimation() => anim.Play(sprintHashID);
     public void PlayJumpAnimation()   => anim.Play(jumpHashID);
+    public void PlayGetUpAnimation()  => anim.Play(getupHashID);
     public void PlayFallAnimation()   => anim.Play(fallHashID);
     public void PlayDeadAnimation()   => anim.Play(deadHashID);
     
     public void PlayCrouchAnimation()     => anim.Play(crouchHashID);
     public void PlayCrouchWalkAnimation() => anim.Play(crouchWalkHashID);
+    public void PlayKnockDownAnimation()  => anim.Play(knockdownHashID);
     
     public void PlayDrawSwordAnimation()   => anim.Play(drawSwordHashID);
     public void PlaySheathSwordAnimation() => anim.Play(sheathSwordHashID);
@@ -118,6 +122,11 @@ public class Character2D : MonoBehaviour
     public void Dead()
     {
         IsDead = true;
+    }
+    
+    public void GetKnockDown()
+    {
+        rb2d.velocity = new Vector3(-(int)FacingDirection * 5, rb2d.velocity.y + 8);
     }
 
     public void Roll()

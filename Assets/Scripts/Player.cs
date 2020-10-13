@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
         var roll = new RollState(character, 0.45f);
         var fall = new FallState(character, input);
         var sprint = new SprintState(character, input);
+        var getup  = new GetUpState(character, 0.5f);
         var crouch = new CrouchState(character);
         var crouchWalk = new CrouchWalkState(character, input);
         // var dead = new DeadState(character);
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour
         var sheathSword = new SheathSwordState(character, 0.4f);
         var swordIdle   = new SwordIdleState(character);
         var swordRun    = new SwordRunState(character, input);
+        var knockdown   = new KnockDownState(character, 0.4f);
         
         fsm.AddTransition(idle, run,  () => input.HasValue);
         fsm.AddTransition(idle, jump, () => Input.GetKey(KeyCode.Space));
@@ -117,6 +119,12 @@ public class Player : MonoBehaviour
         fsm.AddTransition(airAttack1, swordRun,  () => airAttack1.IsDone &&  input.HasValue && character.IsGrounded);
         
         // fsm.AddTransition(FSM.AnyState, dead, () => Input.GetKeyDown(KeyCode.D));
+        fsm.AddTransition(FSM.AnyState, knockdown, () => Input.GetKeyDown(KeyCode.K));
+        
+        fsm.AddTransition(knockdown, getup, () => knockdown.IsDone && (input.HasValue || Input.GetKey(KeyCode.Space)));
+        
+        fsm.AddTransition(getup, idle,      () => getup.IsDone && !character.IsEquipped);
+        fsm.AddTransition(getup, swordIdle, () => getup.IsDone &&  character.IsEquipped);
         
         fsm.SetEntry(idle);
     }
