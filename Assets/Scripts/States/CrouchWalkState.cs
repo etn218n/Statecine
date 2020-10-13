@@ -14,10 +14,16 @@ public class CrouchWalkState : State
     public override void OnEnter()
     {
         character.PlayCrouchWalkAnimation();
+        character.UpperBodyCollider.isTrigger = true;
     }
 
     public override void OnUpdate()
     {
         character.CrouchWalk(input.Horizontal);
+    }
+
+    public override void OnExit()
+    {
+        character.UpperBodyCollider.isTrigger = false;
     }
 }

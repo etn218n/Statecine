@@ -2,36 +2,46 @@
 
 public class Character2D : MonoBehaviour
 {
-    public enum Facing { Left = -1, Right = 1 }
-    
+    public enum Facing
+    {
+        Left = -1,
+        Right = 1
+    }
+
     private Animator anim = null;
     private Rigidbody2D rb2d = null;
     private SpriteRenderer sprRenderer = null;
 
     [SerializeField] private Sensor groundSensor = null;
+    [SerializeField] private Collider2D upperBodyCollider = null;
+    [SerializeField] private Collider2D lowerBodyCollider = null;
+
+    public Collider2D UpperBodyCollider => upperBodyCollider;
+    public Collider2D LowerBodyCollider => lowerBodyCollider;
 
     public Animator Anim => anim;
     public Rigidbody2D RB2D => rb2d;
     public SpriteRenderer SprRenderer => sprRenderer;
 
-    public float RunSpeed    = 1;
-    public float RollSpeed   = 5;
+    public float RunSpeed = 1;
+    public float RollSpeed = 5;
     public float SprintSpeed = 7;
     public float CrouchSpeed = 2;
-    public float JumpForce   = 10;
+    public float JumpForce = 10;
     public float AirControlSpeed = 4;
 
     public Facing FacingDirection { get; private set; }
 
-    public bool IsFalling  => rb2d.velocity.y < 0 && !groundSensor.IsColliding;
+    public bool IsFalling => rb2d.velocity.y < 0 && !groundSensor.IsColliding;
     public bool IsLauching => rb2d.velocity.y > 0 && !groundSensor.IsColliding;
     public bool IsGrounded => groundSensor.IsColliding;
-    public bool IsOnAir    => !groundSensor.IsColliding && rb2d.velocity.y != 0;
+    public bool IsOnAir => !groundSensor.IsColliding && rb2d.velocity.y != 0;
     public bool InAction { get; set; }
     public bool IsDead { get; private set; }
     public bool IsEquipped { get; private set; }
+    //public bool IsStuckFromAbove { get => upperBodyCollider.IsTouching(); }
 
-    private int idleHashID   = Animator.StringToHash("Adventurer Idle");
+private int idleHashID   = Animator.StringToHash("Adventurer Idle");
     private int runHashID    = Animator.StringToHash("Adventurer Run");
     private int rollHashID   = Animator.StringToHash("Adventurer Roll");
     private int sprintHashID = Animator.StringToHash("Adventurer Sprint");

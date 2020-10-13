@@ -13,5 +13,11 @@ public class CrouchState : State
     {
         character.Stop();
         character.PlayCrouchAnimation();
+        character.UpperBodyCollider.isTrigger = true;
+    }
+
+    public override void OnExit()
+    {
+        character.UpperBodyCollider.isTrigger = false;
     }
 }
