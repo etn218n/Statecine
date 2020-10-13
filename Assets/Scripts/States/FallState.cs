@@ -20,4 +20,9 @@ public class FallState : State
     {
         character.Run(input.Horizontal);
     }
+
+    public override void OnExit()
+    {
+        character.Stop();
+    }
 }

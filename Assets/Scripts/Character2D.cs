@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Character2D : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class Character2D : MonoBehaviour
     [SerializeField] private Sensor groundSensor = null;
     [SerializeField] private Collider2D upperBodyCollider = null;
     [SerializeField] private Collider2D lowerBodyCollider = null;
-
+    [SerializeField] private AnimationPreset animationPreset = null;
     public Collider2D UpperBodyCollider => upperBodyCollider;
     public Collider2D LowerBodyCollider => lowerBodyCollider;
 
@@ -30,7 +31,7 @@ public class Character2D : MonoBehaviour
     public float JumpForce = 10;
     public float AirControlSpeed = 4;
 
-    public Facing FacingDirection { get; private set; }
+    public Facing FacingDirection { get; private set; } = Facing.Right;
 
     public bool IsFalling => rb2d.velocity.y < 0 && !groundSensor.IsColliding;
     public bool IsLauching => rb2d.velocity.y > 0 && !groundSensor.IsColliding;
@@ -39,35 +40,6 @@ public class Character2D : MonoBehaviour
     public bool InAction { get; set; }
     public bool IsDead { get; private set; }
     public bool IsEquipped { get; private set; }
-    //public bool IsStuckFromAbove { get => upperBodyCollider.IsTouching(); }
-
-private int idleHashID   = Animator.StringToHash("Adventurer Idle");
-    private int runHashID    = Animator.StringToHash("Adventurer Run");
-    private int rollHashID   = Animator.StringToHash("Adventurer Roll");
-    private int sprintHashID = Animator.StringToHash("Adventurer Sprint");
-    private int jumpHashID   = Animator.StringToHash("Adventurer Jump");
-    private int fallHashID   = Animator.StringToHash("Adventurer Fall");
-    private int getupHashID  = Animator.StringToHash("Adventurer Get Up");
-    private int deadHashID   = Animator.StringToHash("Adventurer Dead");
-    
-    private int crouchHashID     = Animator.StringToHash("Adventurer Crouch");
-    private int crouchWalkHashID = Animator.StringToHash("Adventurer Crouch Walk");
-    private int knockdownHashID  = Animator.StringToHash("Adventurer Knock Down");
-    
-    private int attack1HashID = Animator.StringToHash("Adventurer Attack1");
-    private int attack2HashID = Animator.StringToHash("Adventurer Attack2");
-    private int attack3HashID = Animator.StringToHash("Adventurer Attack3");
-    private int punch1HashID  = Animator.StringToHash("Adventurer Punch1");
-    private int punch2HashID  = Animator.StringToHash("Adventurer Punch2");
-    private int kick1HashID   = Animator.StringToHash("Adventurer Kick1");
-    private int kick2HashID   = Animator.StringToHash("Adventurer Kick2");
-    private int airAttack1HashID = Animator.StringToHash("Adventurer Air Attack1");
-
-    private int drawSwordHashID   = Animator.StringToHash("Adventurer Draw Sword");
-    private int sheathSwordHashID = Animator.StringToHash("Adventurer Sheath Sword");
-    
-    private int swordIdleHashID = Animator.StringToHash("Adventurer Sword Idle");
-    private int swordRunHashID  = Animator.StringToHash("Adventurer Sword Run");
 
     private void Awake()
     {
@@ -76,32 +48,32 @@ private int idleHashID   = Animator.StringToHash("Adventurer Idle");
         sprRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void PlayIdleAnimation()   => anim.Play(idleHashID);
-    public void PlayRunAnimation()    => anim.Play(runHashID);
-    public void PlayRollAnimation()   => anim.Play(rollHashID);
-    public void PlaySprintAnimation() => anim.Play(sprintHashID);
-    public void PlayJumpAnimation()   => anim.Play(jumpHashID);
-    public void PlayGetUpAnimation()  => anim.Play(getupHashID);
-    public void PlayFallAnimation()   => anim.Play(fallHashID);
-    public void PlayDeadAnimation()   => anim.Play(deadHashID);
+    public void PlayIdleAnimation()   => anim.Play(animationPreset.IdleHashID);
+    public void PlayRunAnimation()    => anim.Play(animationPreset.RunHashID);
+    public void PlayRollAnimation()   => anim.Play(animationPreset.RollHashID);
+    public void PlaySprintAnimation() => anim.Play(animationPreset.SprintHashID);
+    public void PlayJumpAnimation()   => anim.Play(animationPreset.JumpHashID);
+    public void PlayGetUpAnimation()  => anim.Play(animationPreset.GetUpHashID);
+    public void PlayFallAnimation()   => anim.Play(animationPreset.FallHashID);
+    public void PlayDeadAnimation()   => anim.Play(animationPreset.DeadHashID);
     
-    public void PlayCrouchAnimation()     => anim.Play(crouchHashID);
-    public void PlayCrouchWalkAnimation() => anim.Play(crouchWalkHashID);
-    public void PlayKnockDownAnimation()  => anim.Play(knockdownHashID);
+    public void PlayCrouchAnimation()     => anim.Play(animationPreset.CrouchHashID);
+    public void PlayCrouchWalkAnimation() => anim.Play(animationPreset.CrouchWalkHashID);
+    public void PlayKnockDownAnimation()  => anim.Play(animationPreset.KnockdownHashID);
     
-    public void PlayDrawSwordAnimation()   => anim.Play(drawSwordHashID);
-    public void PlaySheathSwordAnimation() => anim.Play(sheathSwordHashID);
-    public void PlaySwordIdleAnimation() => anim.Play(swordIdleHashID);
-    public void PlaySwordRunAnimation()  => anim.Play(swordRunHashID);
+    public void PlayDrawSwordAnimation()   => anim.Play(animationPreset.DrawSwordHashID);
+    public void PlaySheathSwordAnimation() => anim.Play(animationPreset.SheathSwordHashID);
+    public void PlaySwordIdleAnimation() => anim.Play(animationPreset.SwordIdleHashID);
+    public void PlaySwordRunAnimation()  => anim.Play(animationPreset.SwordRunHashID);
     
-    public void PlayAttack1Animation() => anim.Play(attack1HashID);
-    public void PlayAttack2Animation() => anim.Play(attack2HashID);
-    public void PlayAttack3Animation() => anim.Play(attack3HashID);
-    public void PlayPunch1Animation()  => anim.Play(punch1HashID);
-    public void PlayPunch2Animation()  => anim.Play(punch2HashID);
-    public void PlayKick1Animation()   => anim.Play(kick1HashID);
-    public void PlayKick2Animation()   => anim.Play(kick2HashID);
-    public void PlayAirAttack1Animation() => anim.Play(airAttack1HashID);
+    public void PlaySwordAttack1Animation() => anim.Play(animationPreset.SwordAttack1HashID);
+    public void PlaySwordAttack2Animation() => anim.Play(animationPreset.SwordAttack2HashID);
+    public void PlaySwordAttack3Animation() => anim.Play(animationPreset.SwordAttack3HashID);
+    public void PlayPunch1Animation()  => anim.Play(animationPreset.Punch1HashID);
+    public void PlayPunch2Animation()  => anim.Play(animationPreset.Punch2HashID);
+    public void PlayKick1Animation()   => anim.Play(animationPreset.Kick1HashID);
+    public void PlayKick2Animation()   => anim.Play(animationPreset.Kick2HashID);
+    public void PlayAirSwordAttack1Animation() => anim.Play(animationPreset.AirSwordAttack1HashID);
 
     public void Run(float directionX) => MoveHorizontal(directionX, RunSpeed);
     public void Sprint(float directionX) => MoveHorizontal(directionX, SprintSpeed);
@@ -164,4 +136,9 @@ private int idleHashID   = Animator.StringToHash("Adventurer Idle");
     {
         rb2d.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
     }
+
+    // private void OnCollisionEnter2D(Collision2D other)
+    // {
+    //     Stop();
+    // }
 }

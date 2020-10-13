@@ -13,7 +13,7 @@ public class Attack2State : DurableState
     {
         base.OnEnter();
         
-        character.PlayAttack2Animation();
+        character.PlaySwordAttack2Animation();
         character.InAction = true;
     }
 

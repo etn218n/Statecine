@@ -13,7 +13,7 @@ public class AirAttack1State : DurableState
     {
         base.OnEnter();
         
-        character.PlayAirAttack1Animation();
+        character.PlayAirSwordAttack1Animation();
         character.InAction = true;
     }
 

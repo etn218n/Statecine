@@ -1552,6 +1552,7 @@ MonoBehaviour:
   groundSensor: {fileID: 1159234119}
   upperBodyCollider: {fileID: 2090267051}
   lowerBodyCollider: {fileID: 2090267055}
+  animationPreset: {fileID: 11400000, guid: 8ea20626f7d2dbe46a0c90f8b2e221a0, type: 2}
   RunSpeed: 4
   RollSpeed: 8
   SprintSpeed: 7
@@ -1591,7 +1592,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 2090267046}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 7707d36fb29f4b24c8d811ff9ccf8789, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

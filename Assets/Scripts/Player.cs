@@ -88,12 +88,12 @@ public class Player : MonoBehaviour
         fsm.AddTransition(sprint, roll, () => Input.GetKey(KeyCode.C));
         fsm.AddTransition(sprint, idle, () => (Input.GetKeyUp(KeyCode.LeftShift) || !input.HasValue) && !character.IsEquipped);
         fsm.AddTransition(sprint, swordIdle, () => (Input.GetKeyUp(KeyCode.LeftShift) || !input.HasValue) && character.IsEquipped);
+        fsm.AddTransition(sprint, attack1,   () => Input.GetKey(KeyCode.Z) && character.IsEquipped);
         
         fsm.AddTransition(jump, FSM.PreviousState, () => character.IsGrounded && jump.IsDone);
         fsm.AddTransition(jump, roll, () => Input.GetKey(KeyCode.C));
         fsm.AddTransition(jump, airAttack1,   () => Input.GetKey(KeyCode.Z) && character.IsEquipped);
-        fsm.AddTransition(FSM.AnyState, fall, () => character.IsFalling && !character.InAction && !character.IsDead);
-        
+
         fsm.AddTransition(fall, idle, () => character.IsGrounded && !input.HasValue && !character.IsEquipped);
         fsm.AddTransition(fall, run,  () => character.IsGrounded &&  input.HasValue && !character.IsEquipped);
         fsm.AddTransition(fall, roll, () => Input.GetKey(KeyCode.C));
@@ -132,6 +132,7 @@ public class Player : MonoBehaviour
         
         // fsm.AddTransition(FSM.AnyState, dead, () => Input.GetKeyDown(KeyCode.D));
         fsm.AddTransition(FSM.AnyState, knockdown, () => Input.GetKeyDown(KeyCode.K));
+        fsm.AddTransition(FSM.AnyState, fall,      () => character.IsFalling && !character.InAction && !character.IsDead);
         
         fsm.AddTransition(knockdown, getup, () => knockdown.IsDone && (input.HasValue || Input.GetKey(KeyCode.Space)));
         

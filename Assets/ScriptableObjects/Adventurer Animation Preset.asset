@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8ba4d76fff46144a9454d9fddd7bb31, type: 3}
+  m_Name: Adventurer Animation Preset
+  m_EditorClassIdentifier: 
+  idle: Adventurer Idle
+  walk: Adventurer Walk
+  run: Adventurer Run
+  roll: Adventurer Roll
+  sprint: Adventurer Sprint
+  crouch: Adventurer Crouch
+  crouchwalk: Adventurer Crouch Walk
+  knockdown: Adventurer Knock Down
+  getup: Adventurer Get Up
+  dead: Adventurer Dead
+  swordIdle: Adventurer Sword Idle
+  swordRun: Adventurer Sword Run
+  jump: Adventurer Jump
+  fall: Adventurer Fall
+  drawSword: Adventurer Draw Sword
+  sheathSword: Adventurer Sheath Sword
+  swordAttack1: Adventurer Attack1
+  swordAttack2: Adventurer Attack2
+  swordAttack3: Adventurer Attack3
+  airSwordAttack1: Adventurer Air Attack1
+  airSwordAttack2: 
+  airSwordAttack3: 
+  punch1: Adventurer Punch1
+  punch2: Adventurer Punch2
+  kick1: Adventurer Kick1
+  kick2: Adventurer Kick2
+  idleHashID: 838120977
+  walkHashID: 1614903633
+  runHashID: 955678784
+  rollHashID: -1016778294
+  sprintHashID: 317009113
+  crouchHashID: 2098432630
+  crouchWalkHashID: 2072218572
+  knockdownHashID: -2002920576
+  getupHashID: 1130214932
+  deadHashID: 16075296
+  swordIdleHashID: 1285811767
+  swordRunHashID: 1747982287
+  jumpHashID: 1248003346
+  fallHashID: 377543688
+  drawSwordHashID: 296268067
+  sheathSwordHashID: -1007602645
+  swordAttack1HashID: -1738018920
+  swordAttack2HashID: 24034850
+  swordAttack3HashID: 1986629300
+  airSwordAttack1HashID: 1333186294
+  airSwordAttack2HashID: 0
+  airSwordAttack3HashID: 0
+  punch1HashID: 455454319
+  punch2HashID: -2110980139
+  kick1HashID: -198649091
+  kick2HashID: 1830914887
