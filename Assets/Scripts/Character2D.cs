@@ -46,6 +46,10 @@ public class Character2D : MonoBehaviour
     private int attack1HashID = Animator.StringToHash("Adventurer Attack1");
     private int attack2HashID = Animator.StringToHash("Adventurer Attack2");
     private int attack3HashID = Animator.StringToHash("Adventurer Attack3");
+    private int punch1HashID  = Animator.StringToHash("Adventurer Punch1");
+    private int punch2HashID  = Animator.StringToHash("Adventurer Punch2");
+    private int kick1HashID   = Animator.StringToHash("Adventurer Kick1");
+    private int kick2HashID   = Animator.StringToHash("Adventurer Kick2");
     private int airAttack1HashID = Animator.StringToHash("Adventurer Air Attack1");
 
     private int drawSwordHashID   = Animator.StringToHash("Adventurer Draw Sword");
@@ -82,6 +86,10 @@ public class Character2D : MonoBehaviour
     public void PlayAttack1Animation() => anim.Play(attack1HashID);
     public void PlayAttack2Animation() => anim.Play(attack2HashID);
     public void PlayAttack3Animation() => anim.Play(attack3HashID);
+    public void PlayPunch1Animation()  => anim.Play(punch1HashID);
+    public void PlayPunch2Animation()  => anim.Play(punch2HashID);
+    public void PlayKick1Animation()   => anim.Play(kick1HashID);
+    public void PlayKick2Animation()   => anim.Play(kick2HashID);
     public void PlayAirAttack1Animation() => anim.Play(airAttack1HashID);
 
     public void Run(float directionX) => MoveHorizontal(directionX, RunSpeed);
