@@ -23,6 +23,6 @@ public class JumpState : DurableState
     {
         base.OnUpdate();
         
-        //character.MoveHorizontal(input.Horizontal);
+        character.Run(input.Horizontal);
     }
 }

@@ -18,6 +18,6 @@ public class FallState : State
 
     public override void OnUpdate()
     {
-        //character.MoveHorizontal(input.Horizontal);
+        character.Run(input.Horizontal);
     }
 }

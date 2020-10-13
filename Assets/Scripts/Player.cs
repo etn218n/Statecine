@@ -96,6 +96,7 @@ public class Player : MonoBehaviour
         
         fsm.AddTransition(fall, idle, () => character.IsGrounded && !input.HasValue && !character.IsEquipped);
         fsm.AddTransition(fall, run,  () => character.IsGrounded &&  input.HasValue && !character.IsEquipped);
+        fsm.AddTransition(fall, roll, () => Input.GetKey(KeyCode.C));
         fsm.AddTransition(fall, swordIdle,  () => character.IsGrounded && !input.HasValue && character.IsEquipped);
         fsm.AddTransition(fall, swordRun,   () => character.IsGrounded &&  input.HasValue && character.IsEquipped);
         fsm.AddTransition(fall, airAttack1, () => Input.GetKey(KeyCode.Z) && character.IsEquipped);

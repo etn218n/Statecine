@@ -19,6 +19,7 @@ public class Character2D : MonoBehaviour
     public float SprintSpeed = 7;
     public float CrouchSpeed = 2;
     public float JumpForce   = 10;
+    public float AirControlSpeed = 4;
 
     public Facing FacingDirection { get; private set; }
 
@@ -94,6 +95,7 @@ public class Character2D : MonoBehaviour
 
     public void Run(float directionX) => MoveHorizontal(directionX, RunSpeed);
     public void Sprint(float directionX) => MoveHorizontal(directionX, SprintSpeed);
+    public void AirControl(float directionX) => MoveHorizontal(directionX, AirControlSpeed);
     public void CrouchWalk(float directionX) => MoveHorizontal(directionX, CrouchSpeed);
 
     public void MoveHorizontal(float directionX, float speed)
