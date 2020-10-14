@@ -3,11 +3,8 @@ using UnityEngine;
 
 public class Character2D : MonoBehaviour
 {
-    public enum Facing
-    {
-        Left = -1,
-        Right = 1
-    }
+    private Vector2 direction   = Vector2.right;
+    private Vector3 cachedScale = new Vector3(1, 1, 1);
 
     private Animator anim = null;
     private Rigidbody2D rb2d = null;
@@ -17,6 +14,7 @@ public class Character2D : MonoBehaviour
     [SerializeField] private Collider2D upperBodyCollider = null;
     [SerializeField] private Collider2D lowerBodyCollider = null;
     [SerializeField] private AnimationPreset animationPreset = null;
+    
     public Collider2D UpperBodyCollider => upperBodyCollider;
     public Collider2D LowerBodyCollider => lowerBodyCollider;
 
@@ -30,8 +28,6 @@ public class Character2D : MonoBehaviour
     public float CrouchSpeed = 2;
     public float JumpForce = 10;
     public float AirControlSpeed = 4;
-
-    public Facing FacingDirection { get; private set; } = Facing.Right;
 
     public bool IsFalling => rb2d.velocity.y < 0 && !groundSensor.IsColliding;
     public bool IsLauching => rb2d.velocity.y > 0 && !groundSensor.IsColliding;
@@ -89,16 +85,16 @@ public class Character2D : MonoBehaviour
 
     public void OnDirectionChanged(float directionX)
     {
+        if (directionX == 0)
+            return;
+        
         if (directionX > 0)
-        {
-            FacingDirection = Facing.Right;
-            SprRenderer.flipX  = false;
-        }
-        else if (directionX < 0)
-        {
-            FacingDirection = Facing.Left;
-            SprRenderer.flipX = true;
-        }
+            direction.x = 1;
+        else 
+            direction.x = -1;
+
+        cachedScale.x = directionX;
+        transform.localScale = cachedScale;
     }
 
     public void DrawWeapon()
@@ -118,13 +114,13 @@ public class Character2D : MonoBehaviour
     
     public void GetKnockDown()
     {
-        rb2d.velocity = new Vector3(-(int)FacingDirection * 5, rb2d.velocity.y + 8);
+        rb2d.velocity = new Vector3(-direction.x * 5, rb2d.velocity.y + 8);
     }
 
     public void Roll()
     {
         rb2d.velocity = Vector2.zero;
-        rb2d.velocity = new Vector3((int)FacingDirection * RollSpeed, rb2d.velocity.y);
+        rb2d.velocity = new Vector3(direction.x * RollSpeed, rb2d.velocity.y);
     }
 
     public void Stop()
