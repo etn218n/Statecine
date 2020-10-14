@@ -1,10 +1,10 @@
 ﻿using Node;
 
-public class Attack3State : DurableState
+public class SwordAttack3State : DurableState
 {
     private readonly Character2D character;
 
-    public Attack3State(Character2D character, float duration) : base(duration)
+    public SwordAttack3State(Character2D character, float duration) : base(duration)
     {
         this.character = character;
     }

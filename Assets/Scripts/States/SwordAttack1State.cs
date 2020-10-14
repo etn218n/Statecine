@@ -1,10 +1,10 @@
 ﻿using Node;
 
-public class AirAttack1State : DurableState
+public class SwordAttack1State : DurableState
 {
     private readonly Character2D character;
 
-    public AirAttack1State(Character2D character, float duration) : base(duration)
+    public SwordAttack1State(Character2D character, float duration) : base(duration)
     {
         this.character = character;
     }
@@ -13,7 +13,7 @@ public class AirAttack1State : DurableState
     {
         base.OnEnter();
         
-        character.PlayAirSwordAttack1Animation();
+        character.PlaySwordAttack1Animation();
         character.InAction = true;
     }
 
