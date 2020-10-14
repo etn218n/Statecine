@@ -143,8 +143,17 @@ public class Character2D : MonoBehaviour
         rb2d.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
     }
 
-    // private void OnCollisionEnter2D(Collision2D other)
-    // {
-    //     Stop();
-    // }
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        // if (rb2d.velocity.y > 18)
+        // {
+        //      rb2d.velocity = Vector2.zero;
+        //      Debug.Log(rb2d.velocity);
+        // }
+    }
+
+    private void FixedUpdate()
+    {
+        
+    }
 }

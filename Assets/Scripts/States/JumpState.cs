@@ -24,10 +24,8 @@ public class JumpState : DurableState
         character.Jump();
     }
 
-    public override void OnUpdate()
+    public override void OnFixedUpdate()
     {
-        base.OnUpdate();
-        
         if (allowAirControl) 
             character.AirControl(input.Horizontal);
     }

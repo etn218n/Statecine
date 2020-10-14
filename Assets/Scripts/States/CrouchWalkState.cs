@@ -17,7 +17,7 @@ public class CrouchWalkState : State
         character.UpperBodyCollider.isTrigger = true;
     }
 
-    public override void OnUpdate()
+    public override void OnFixedUpdate()
     {
         character.CrouchWalk(input.Horizontal);
     }

@@ -21,7 +21,7 @@ public class FallState : State
         character.PlayFallAnimation();
     }
 
-    public override void OnUpdate()
+    public override void OnFixedUpdate()
     {
         if (allowAirControl) 
             character.AirControl(input.Horizontal);

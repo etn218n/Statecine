@@ -16,7 +16,7 @@ public class SprintState : State
         character.PlaySprintAnimation();
     }
 
-    public override void OnUpdate()
+    public override void OnFixedUpdate()
     {
         character.Sprint(input.Horizontal);
     }

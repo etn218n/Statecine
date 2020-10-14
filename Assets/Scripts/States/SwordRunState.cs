@@ -16,7 +16,7 @@ public class SwordRunState : State
         character.PlaySwordRunAnimation();
     }
 
-    public override void OnUpdate()
+    public override void OnFixedUpdate()
     {
         character.Run(input.Horizontal);
     }

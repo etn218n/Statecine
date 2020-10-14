@@ -16,7 +16,7 @@ public class RunState : State
         character.PlayRunAnimation();
     }
 
-    public override void OnUpdate()
+    public override void OnFixedUpdate()
     {
         character.Run(input.Horizontal);
     }
