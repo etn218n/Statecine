@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Character2D : MonoBehaviour
 {
@@ -11,6 +10,7 @@ public class Character2D : MonoBehaviour
     private SpriteRenderer sprRenderer = null;
 
     [SerializeField] private Sensor groundSensor = null;
+    [SerializeField] private Sensor frontSensor  = null;
     [SerializeField] private Collider2D upperBodyCollider = null;
     [SerializeField] private Collider2D lowerBodyCollider = null;
     [SerializeField] private AnimationPreset animationPreset = null;
@@ -29,7 +29,7 @@ public class Character2D : MonoBehaviour
     public float JumpForce = 10;
     public float AirControlSpeed = 4;
 
-    public bool IsFalling => rb2d.velocity.y < 0 && !groundSensor.IsColliding;
+    public bool IsFalling  => rb2d.velocity.y < 0 && !groundSensor.IsColliding;
     public bool IsLauching => rb2d.velocity.y > 0 && !groundSensor.IsColliding;
     public bool IsGrounded => groundSensor.IsColliding;
     public bool IsOnAir => !groundSensor.IsColliding && rb2d.velocity.y != 0;
@@ -73,9 +73,19 @@ public class Character2D : MonoBehaviour
 
     public void Run(float directionX) => MoveHorizontal(directionX, RunSpeed);
     public void Sprint(float directionX) => MoveHorizontal(directionX, SprintSpeed);
-    public void AirControl(float directionX) => MoveHorizontal(directionX, AirControlSpeed);
+    
     public void CrouchWalk(float directionX) => MoveHorizontal(directionX, CrouchSpeed);
 
+    public void AirControl(float directionX)
+    {
+        if (frontSensor.IsColliding)
+            return;
+        
+        rb2d.velocity = new Vector3(directionX * AirControlSpeed, rb2d.velocity.y);
+        
+        OnDirectionChanged(directionX);
+    }
+    
     public void MoveHorizontal(float directionX, float speed)
     {
         rb2d.velocity = new Vector3(directionX * speed, rb2d.velocity.y);

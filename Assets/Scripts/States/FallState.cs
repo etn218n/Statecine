@@ -5,10 +5,15 @@ public class FallState : State
     private readonly Character2D character;
     private readonly PlayerInput input;
 
-    public FallState(Character2D character, PlayerInput input)
+    private bool allowAirControl;
+    public  bool AllowAirControl => allowAirControl;
+
+    public FallState(Character2D character, PlayerInput input, bool allowAirControl = false)
     {
         this.character = character;
         this.input     = input;
+        
+        this.allowAirControl = allowAirControl;
     }
 
     public override void OnEnter()
@@ -18,7 +23,8 @@ public class FallState : State
 
     public override void OnUpdate()
     {
-        character.Run(input.Horizontal);
+        if (allowAirControl) 
+            character.AirControl(input.Horizontal);
     }
 
     public override void OnExit()

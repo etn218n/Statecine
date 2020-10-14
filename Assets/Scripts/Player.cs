@@ -15,9 +15,9 @@ public class Player : MonoBehaviour
         
         var idle = new IdleState(character);
         var run  = new RunState(character, input);
-        var jump = new JumpState(character, input, 0.05f);
+        var jump = new JumpState(character, input, 0.05f, true);
         var roll = new RollState(character, 0.45f);
-        var fall = new FallState(character, input);
+        var fall = new FallState(character, input, true);
         var sprint = new SprintState(character, input);
         var getup  = new GetUpState(character, 0.5f);
         var crouch = new CrouchState(character);

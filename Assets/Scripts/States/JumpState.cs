@@ -4,11 +4,16 @@ public class JumpState : DurableState
 {
     private readonly Character2D character;
     private readonly PlayerInput input;
+    
+    private bool allowAirControl;
+    public  bool AllowAirControl => allowAirControl;
 
-    public JumpState(Character2D character, PlayerInput input, float duration) : base(duration)
+    public JumpState(Character2D character, PlayerInput input, float duration, bool allowAirControl = false) : base(duration)
     {
         this.character = character;
         this.input     = input;
+        
+        this.allowAirControl = allowAirControl;
     }
     
     public override void OnEnter()
@@ -23,6 +28,7 @@ public class JumpState : DurableState
     {
         base.OnUpdate();
         
-        character.Run(input.Horizontal);
+        if (allowAirControl) 
+            character.AirControl(input.Horizontal);
     }
 }
