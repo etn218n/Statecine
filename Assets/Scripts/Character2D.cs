@@ -71,6 +71,7 @@ public class Character2D : MonoBehaviour
     public void PlaySwordAttack3Animation() => anim.Play(animationPreset.SwordAttack3HashID);
     public void PlayPunch1Animation()  => anim.Play(animationPreset.Punch1HashID);
     public void PlayPunch2Animation()  => anim.Play(animationPreset.Punch2HashID);
+    public void PlayPunch3Animation()  => anim.Play(animationPreset.Punch3HashID);
     public void PlayKick1Animation()   => anim.Play(animationPreset.Kick1HashID);
     public void PlayKick2Animation()   => anim.Play(animationPreset.Kick2HashID);
     public void PlayAirSwordAttack1Animation() => anim.Play(animationPreset.AirSwordAttack1HashID);

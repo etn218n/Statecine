@@ -16,16 +16,19 @@ MonoBehaviour:
   walk: Adventurer Walk
   run: Adventurer Run
   roll: Adventurer Roll
+  climb: 
   sprint: Adventurer Sprint
   crouch: Adventurer Crouch
   crouchwalk: Adventurer Crouch Walk
   knockdown: Adventurer Knock Down
   getup: Adventurer Get Up
+  hurt: 
   dead: Adventurer Dead
   swordIdle: Adventurer Sword Idle
   swordRun: Adventurer Sword Run
   jump: Adventurer Jump
   fall: Adventurer Fall
+  land: 
   drawSword: Adventurer Draw Sword
   sheathSword: Adventurer Sheath Sword
   swordAttack1: Adventurer Attack1
@@ -36,22 +39,27 @@ MonoBehaviour:
   airSwordAttack3: 
   punch1: Adventurer Punch1
   punch2: Adventurer Punch2
+  punch3: Adventurer Punch3
   kick1: Adventurer Kick1
   kick2: Adventurer Kick2
+  kick3: 
   idleHashID: 838120977
   walkHashID: 1614903633
   runHashID: 955678784
   rollHashID: -1016778294
+  climbHashID: 0
   sprintHashID: 317009113
   crouchHashID: 2098432630
   crouchWalkHashID: 2072218572
   knockdownHashID: -2002920576
   getupHashID: 1130214932
+  hurtHashID: 0
   deadHashID: 16075296
   swordIdleHashID: 1285811767
   swordRunHashID: 1747982287
   jumpHashID: 1248003346
   fallHashID: 377543688
+  landHashID: 0
   drawSwordHashID: 296268067
   sheathSwordHashID: -1007602645
   swordAttack1HashID: -1738018920
@@ -62,5 +70,7 @@ MonoBehaviour:
   airSwordAttack3HashID: 0
   punch1HashID: 455454319
   punch2HashID: -2110980139
+  punch3HashID: -181678269
   kick1HashID: -198649091
   kick2HashID: 1830914887
+  kick3HashID: 0
