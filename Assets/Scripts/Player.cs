@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
         var idle = new IdleState(character);
         var run  = new RunState(character, input);
         var jump = new JumpState(character, input, 0.05f, true);
+        var doubleJump = new DoubleJumpState(character, input, 0.05f, true);
         var roll = new RollState(character, 0.45f);
         var fall = new FallState(character, input, true);
         var sprint = new SprintState(character, input);
@@ -36,7 +37,7 @@ public class Player : MonoBehaviour
         var knockdown   = new KnockDownState(character, 0.4f);
         
         fsm.AddTransition(idle, run,  () => input.HasValue);
-        fsm.AddTransition(idle, jump, () => Input.GetKey(KeyCode.Space));
+        fsm.AddTransition(idle, jump, () => Input.GetKeyDown(KeyCode.Space));
         fsm.AddTransition(idle, roll, () => Input.GetKey(KeyCode.C));
         fsm.AddTransition(idle, punch1,    () => Input.GetKey(KeyCode.Z));
         fsm.AddTransition(idle, crouch,    () => Input.GetKey(KeyCode.LeftControl));
@@ -58,14 +59,14 @@ public class Player : MonoBehaviour
         fsm.AddTransition(drawSword, swordRun,    () => drawSword.IsDone && input.HasValue);
         
         fsm.AddTransition(swordIdle, swordRun,    () => input.HasValue);
-        fsm.AddTransition(swordIdle, jump,        () => Input.GetKey(KeyCode.Space));
+        fsm.AddTransition(swordIdle, jump,        () => Input.GetKeyDown(KeyCode.Space));
         fsm.AddTransition(swordIdle, sheathSword, () => Input.GetKeyDown(KeyCode.V));
         fsm.AddTransition(swordIdle, crouch,      () => Input.GetKey(KeyCode.LeftControl));
         fsm.AddTransition(swordIdle, swordAttack1State,     () => Input.GetKey(KeyCode.Z));
         fsm.AddTransition(swordIdle, roll,        () => Input.GetKey(KeyCode.C));
         
         fsm.AddTransition(swordRun, swordIdle,   () => !input.HasValue);
-        fsm.AddTransition(swordRun, jump,        () => Input.GetKey(KeyCode.Space));
+        fsm.AddTransition(swordRun, jump,        () => Input.GetKeyDown(KeyCode.Space));
         fsm.AddTransition(swordRun, sprint,      () => Input.GetKey(KeyCode.LeftShift));
         fsm.AddTransition(swordRun, sheathSword, () => Input.GetKeyDown(KeyCode.V));
         fsm.AddTransition(swordRun, crouch,      () => Input.GetKey(KeyCode.LeftControl));
@@ -78,34 +79,39 @@ public class Player : MonoBehaviour
         
         fsm.AddTransition(run, idle,      () => !input.HasValue);
         fsm.AddTransition(run, drawSword, () => Input.GetKeyDown(KeyCode.V));
-        fsm.AddTransition(run, jump,      () => Input.GetKey(KeyCode.Space));
+        fsm.AddTransition(run, jump,      () => Input.GetKeyDown(KeyCode.Space));
         fsm.AddTransition(run, sprint,    () => Input.GetKey(KeyCode.LeftShift));
         fsm.AddTransition(run, crouch,    () => Input.GetKey(KeyCode.LeftControl));
         fsm.AddTransition(run, roll,      () => Input.GetKey(KeyCode.C));
         fsm.AddTransition(run, punch1,    () => Input.GetKey(KeyCode.Z));
         
-        fsm.AddTransition(sprint, jump, () => Input.GetKey(KeyCode.Space));
+        fsm.AddTransition(sprint, jump, () => Input.GetKeyDown(KeyCode.Space));
         fsm.AddTransition(sprint, roll, () => Input.GetKey(KeyCode.C));
         fsm.AddTransition(sprint, idle, () => (Input.GetKeyUp(KeyCode.LeftShift) || !input.HasValue) && !character.IsEquipped);
         fsm.AddTransition(sprint, swordIdle, () => (Input.GetKeyUp(KeyCode.LeftShift) || !input.HasValue) && character.IsEquipped);
         fsm.AddTransition(sprint, swordAttack1State, () => Input.GetKey(KeyCode.Z) && character.IsEquipped);
         
-        fsm.AddTransition(jump, FSM.PreviousState, () => character.IsGrounded && jump.IsDone);
+        //fsm.AddTransition(jump, FSM.PreviousState, () => character.IsGrounded && jump.IsDone);
         fsm.AddTransition(jump, roll, () => Input.GetKey(KeyCode.C));
         fsm.AddTransition(jump, airSwordAttack1State,   () => Input.GetKey(KeyCode.Z) && character.IsEquipped);
-
+        fsm.AddTransition(jump, doubleJump, () => Input.GetKeyDown(KeyCode.Space) && jump.IsDone && doubleJump.IsReady);
+        
+        fsm.AddTransition(doubleJump, roll, () => Input.GetKey(KeyCode.C));
+        fsm.AddTransition(doubleJump, airSwordAttack1State, () => Input.GetKey(KeyCode.Z) && character.IsEquipped);
+        
         fsm.AddTransition(fall, idle, () => character.IsGrounded && !input.HasValue && !character.IsEquipped);
         fsm.AddTransition(fall, run,  () => character.IsGrounded &&  input.HasValue && !character.IsEquipped);
         fsm.AddTransition(fall, roll, () => Input.GetKey(KeyCode.C));
         fsm.AddTransition(fall, swordIdle,  () => character.IsGrounded && !input.HasValue && character.IsEquipped);
         fsm.AddTransition(fall, swordRun,   () => character.IsGrounded &&  input.HasValue && character.IsEquipped);
         fsm.AddTransition(fall, airSwordAttack1State, () => Input.GetKey(KeyCode.Z) && character.IsEquipped);
+        fsm.AddTransition(fall, doubleJump, () => Input.GetKeyDown(KeyCode.Space) && doubleJump.IsReady);
 
         fsm.AddTransition(roll, idle, () => roll.IsDone && !input.HasValue && !character.IsEquipped && character.IsGrounded);
         fsm.AddTransition(roll, run,  () => roll.IsDone &&  input.HasValue && !character.IsEquipped && character.IsGrounded);
         fsm.AddTransition(roll, swordIdle, () => roll.IsDone && !input.HasValue && character.IsEquipped && character.IsGrounded);
         fsm.AddTransition(roll, swordRun,  () => roll.IsDone &&  input.HasValue && character.IsEquipped && character.IsGrounded);
-        fsm.AddTransition(roll, jump,    () => Input.GetKey(KeyCode.Space));
+        fsm.AddTransition(roll, jump,      () => Input.GetKeyDown(KeyCode.Space));
         fsm.AddTransition(roll, swordAttack1State, () => Input.GetKey(KeyCode.Z) && character.IsEquipped);
         
         fsm.AddTransition(swordAttack1State, swordAttack2State,   () => swordAttack1State.Elapsed > 0.3f && Input.GetKey(KeyCode.Z));

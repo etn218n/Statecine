@@ -14,7 +14,10 @@ public class Character2D : MonoBehaviour
     [SerializeField] private Collider2D upperBodyCollider = null;
     [SerializeField] private Collider2D lowerBodyCollider = null;
     [SerializeField] private AnimationPreset animationPreset = null;
-    
+
+    public Sensor GroundSensor => groundSensor;
+    public Sensor FrontSensor  => frontSensor;
+
     public Collider2D UpperBodyCollider => upperBodyCollider;
     public Collider2D LowerBodyCollider => lowerBodyCollider;
 
@@ -27,6 +30,7 @@ public class Character2D : MonoBehaviour
     public float SprintSpeed = 7;
     public float CrouchSpeed = 2;
     public float JumpForce = 10;
+    public float DoubleJumpForce = 12;
     public float AirControlSpeed = 4;
 
     public bool IsFalling  => rb2d.velocity.y < 0 && !groundSensor.IsColliding;
@@ -142,18 +146,10 @@ public class Character2D : MonoBehaviour
     {
         rb2d.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
     }
-
-    private void OnCollisionEnter2D(Collision2D other)
+    
+    public void DoubleJump()
     {
-        // if (rb2d.velocity.y > 18)
-        // {
-        //      rb2d.velocity = Vector2.zero;
-        //      Debug.Log(rb2d.velocity);
-        // }
-    }
-
-    private void FixedUpdate()
-    {
-        
+        rb2d.velocity = Vector2.zero;
+        rb2d.AddForce(Vector2.up * DoubleJumpForce, ForceMode2D.Impulse);
     }
 }
