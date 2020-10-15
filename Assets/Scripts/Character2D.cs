@@ -129,7 +129,8 @@ public class Character2D : MonoBehaviour
     
     public void GetKnockDown()
     {
-        rb2d.velocity = new Vector3(-direction.x * 5, rb2d.velocity.y + 8);
+        rb2d.velocity = Vector2.zero;
+        rb2d.velocity = new Vector3(-direction.x * 5, 8);
     }
 
     public void Roll()
