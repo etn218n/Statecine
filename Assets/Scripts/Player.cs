@@ -97,9 +97,7 @@ public class Player : MonoBehaviour
         fsm.AddTransition(jump, airSwordAttack1, () => Input.GetKey(KeyCode.Z) && character.IsEquipped);
         fsm.AddTransition(jump, punch3, () => Input.GetKey(KeyCode.Z) && !character.IsEquipped);
         fsm.AddTransition(jump, doubleJump, () => Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) && jump.IsDone && doubleJump.IsReady);
-        fsm.AddTransition(jump, idle,      () => character.IsGrounded && jump.IsDone && !character.IsEquipped);
-        fsm.AddTransition(jump, swordIdle, () => character.IsGrounded && jump.IsDone &&  character.IsEquipped);
-        
+
         fsm.AddTransition(doubleJump, roll, () => Input.GetKey(KeyCode.C));
         fsm.AddTransition(doubleJump, airSwordAttack1, () => Input.GetKey(KeyCode.Z) && character.IsEquipped);
         
@@ -168,8 +166,6 @@ public class Player : MonoBehaviour
             character.RB2D.position    = new Vector2(-1.5f, 7);
             character.SprRenderer.enabled = true;
         }
-        
-        Debug.Log(character.IsGrounded);
     }
 
     private void FixedUpdate()
