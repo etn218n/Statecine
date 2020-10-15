@@ -2,7 +2,7 @@
 
 public class Parallax : MonoBehaviour
 {
-    public float ParallaxSpeed;
+    public float ParallaxRatio;
 
     [SerializeField] private GameObject parallaxObject = null;
     [SerializeField] private GameObject followTarget   = null;
@@ -29,8 +29,8 @@ public class Parallax : MonoBehaviour
 
     private void Update()
     {
-        float temp = (followTarget.transform.position.x * (1 - ParallaxSpeed));
-        float dist = (followTarget.transform.position.x * ParallaxSpeed);
+        float temp = (followTarget.transform.position.x * (1 - ParallaxRatio));
+        float dist = (followTarget.transform.position.x * ParallaxRatio);
         
         transform.position = new Vector3(startPosition.x + dist, transform.position.y, transform.position.z);
 
