@@ -4,9 +4,9 @@ public class PlayerInput : MonoBehaviour
 {
     public float Horizontal { get; private set; }
     public float Vertical   { get; private set; }
-    public bool HasValueX => (Horizontal != 0);
-    public bool HasValueY => (Vertical != 0);
-    public bool HasValue => (Horizontal != 0) || (Vertical != 0);
+    public bool MoveX => (Horizontal != 0);
+    public bool MoveY => (Vertical != 0);
+    public bool Move => (Horizontal != 0) || (Vertical != 0);
 
     public InputAction Jump = new InputAction(KeyCode.Space, KeyCode.UpArrow);
     public InputAction Roll = new InputAction(KeyCode.C);
