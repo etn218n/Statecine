@@ -9,6 +9,7 @@ public class Character2D : MonoBehaviour
     private Rigidbody2D rb2d = null;
     private SpriteRenderer sprRenderer = null;
 
+    [Header("Components")]
     [SerializeField] private Sensor groundSensor = null;
     [SerializeField] private Sensor frontSensor  = null;
     [SerializeField] private Collider2D upperBodyCollider = null;
@@ -25,6 +26,7 @@ public class Character2D : MonoBehaviour
     public Rigidbody2D RB2D => rb2d;
     public SpriteRenderer SprRenderer => sprRenderer;
 
+    [Header("Stats")]
     public float RunSpeed = 1;
     public float RollSpeed = 5;
     public float SprintSpeed = 7;
@@ -108,7 +110,7 @@ public class Character2D : MonoBehaviour
         else 
             direction.x = -1;
 
-        cachedScale.x = directionX;
+        cachedScale.x = direction.x;
         transform.localScale = cachedScale;
     }
 

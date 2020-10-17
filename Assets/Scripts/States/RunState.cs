@@ -3,12 +3,12 @@
 public class RunState : State
 {
     private readonly Character2D character;
-    private readonly PlayerInput input;
+    private readonly ICommandAdventurer command;
 
-    public RunState(Character2D character, PlayerInput input)
+    public RunState(Character2D character, ICommandAdventurer command)
     {
         this.character = character;
-        this.input     = input;
+        this.command   = command;
     }
         
     public override void OnEnter()
@@ -18,6 +18,6 @@ public class RunState : State
 
     public override void OnFixedUpdate()
     {
-        character.Run(input.Horizontal);
+        character.Run(command.MoveX.Value);
     }
 }

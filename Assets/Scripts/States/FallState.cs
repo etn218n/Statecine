@@ -3,15 +3,15 @@
 public class FallState : State
 {
     private readonly Character2D character;
-    private readonly PlayerInput input;
+    private readonly ICommandAdventurer command;
 
     private bool allowAirControl;
     public  bool AllowAirControl => allowAirControl;
 
-    public FallState(Character2D character, PlayerInput input, bool allowAirControl = false)
+    public FallState(Character2D character, ICommandAdventurer command, bool allowAirControl = false)
     {
         this.character = character;
-        this.input     = input;
+        this.command   = command;
         
         this.allowAirControl = allowAirControl;
     }
@@ -24,7 +24,7 @@ public class FallState : State
     public override void OnFixedUpdate()
     {
         if (allowAirControl) 
-            character.AirControl(input.Horizontal);
+            character.AirControl(command.MoveX.Value);
     }
 
     public override void OnExit()

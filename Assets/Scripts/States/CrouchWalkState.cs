@@ -3,12 +3,12 @@
 public class CrouchWalkState : State
 {
     private readonly Character2D character;
-    private readonly PlayerInput input;
+    private readonly ICommandAdventurer command;
 
-    public CrouchWalkState(Character2D character, PlayerInput input)
+    public CrouchWalkState(Character2D character, ICommandAdventurer command)
     {
         this.character = character;
-        this.input     = input;
+        this.command   = command;
     }
         
     public override void OnEnter()
@@ -19,7 +19,7 @@ public class CrouchWalkState : State
 
     public override void OnFixedUpdate()
     {
-        character.CrouchWalk(input.Horizontal);
+        character.CrouchWalk(command.MoveX.Value);
     }
 
     public override void OnExit()

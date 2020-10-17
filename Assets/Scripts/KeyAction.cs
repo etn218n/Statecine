@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-public class InputAction
+public class KeyAction : ICharacterAction
 {
     private KeyCode primaryKey;
     private KeyCode secondaryKey;
     
-    public InputAction(KeyCode primaryKey, KeyCode secondaryKey = KeyCode.None)
+    public KeyAction(KeyCode primaryKey, KeyCode secondaryKey = KeyCode.None)
     {
         this.primaryKey   = primaryKey;
         this.secondaryKey = secondaryKey;

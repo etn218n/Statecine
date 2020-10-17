@@ -3,7 +3,7 @@
 public class DoubleJumpState : DurableState
 {
     private readonly Character2D character;
-    private readonly PlayerInput input;
+    private readonly ICommandAdventurer command;
     
     private bool allowAirControl;
     public  bool AllowAirControl => allowAirControl;
@@ -11,10 +11,10 @@ public class DoubleJumpState : DurableState
     private bool isReady;
     public  bool IsReady => isReady;
 
-    public DoubleJumpState(Character2D character, PlayerInput input, float duration, bool allowAirControl = false) : base(duration)
+    public DoubleJumpState(Character2D character, ICommandAdventurer command, float duration, bool allowAirControl = false) : base(duration)
     {
         this.character = character;
-        this.input     = input;
+        this.command   = command;
         
         this.allowAirControl = allowAirControl;
 
@@ -39,6 +39,6 @@ public class DoubleJumpState : DurableState
     public override void OnFixedUpdate()
     {
         if (allowAirControl) 
-            character.AirControl(input.Horizontal);
+            character.AirControl(command.MoveX.Value);
     }
 }

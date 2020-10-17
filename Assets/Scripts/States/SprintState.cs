@@ -3,12 +3,12 @@
 public class SprintState : State
 {
     private readonly Character2D character;
-    private readonly PlayerInput input;
+    private readonly ICommandAdventurer command;
 
-    public SprintState(Character2D character, PlayerInput input)
+    public SprintState(Character2D character, ICommandAdventurer command)
     {
         this.character = character;
-        this.input     = input;
+        this.command   = command;
     }
         
     public override void OnEnter()
@@ -18,6 +18,6 @@ public class SprintState : State
 
     public override void OnFixedUpdate()
     {
-        character.Sprint(input.Horizontal);
+        character.Sprint(command.MoveX.Value);
     }
 }
