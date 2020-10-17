@@ -21,11 +21,11 @@ namespace Node
         
         public void Update()
         {
-            CheckTransitions();
-            
             CurrentState.OnUpdate();
+            
+            CheckTransitions();
         }
-
+        
         public void FixedUpdate()
         {
             CurrentState.OnFixedUpdate();
