@@ -19,6 +19,8 @@ public class SwordAttack1State : DurableState
 
     public override void OnExit()
     {
+        base.OnExit();
+        
         character.InAction = false;
     }
 }

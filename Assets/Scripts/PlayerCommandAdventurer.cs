@@ -2,7 +2,7 @@
 
 public class PlayerCommandAdventurer : MonoBehaviour, ICommandAdventurer
 {
-    public ICharacterAction<float> MoveX { get; } = new HorizontalKeyAction();
+    public ICharacterAction<float> MoveX { get; } = new FloatAction();
     
     public ICharacterAction Jump { get; } = new KeyAction(KeyCode.Space, KeyCode.UpArrow);
     public ICharacterAction Roll { get; } = new KeyAction(KeyCode.C);
@@ -20,17 +20,19 @@ public class PlayerCommandAdventurer : MonoBehaviour, ICommandAdventurer
     }
 }
 
-public class HorizontalKeyAction : ICharacterAction<float>
+public class FloatAction : ICharacterAction<float>
 {
-    public bool Start   { get => value != 0; }
-    public bool Perform { get => value != 0; }
-    public bool Cancel  { get => value == 0; }
-
+    private float value;
+    
     public float Value
     {
         get => value;
         set => this.value = value;
     }
 
-    private float value;
+    public void Set(bool value) { }
+
+    public bool Start   { get => value != 0; }
+    public bool Perform { get => value != 0; }
+    public bool Cancel  { get => value == 0; }
 }

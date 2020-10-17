@@ -20,6 +20,8 @@ public class KnockDownState : DurableState
 
     public override void OnExit()
     {
+        base.OnExit();
+        
         character.InAction = false;
     }
 }

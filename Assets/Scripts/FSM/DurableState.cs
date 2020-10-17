@@ -4,9 +4,9 @@ namespace Node
 {
     public class DurableState : State
     {
-        public float Duration { get; protected set; }
-        public float Elapsed  { get; protected set; }
-        public bool  IsDone   { get; protected set; }
+        public float Duration { get; protected set; } = 0;
+        public float Elapsed  { get; protected set; } = 0;
+        public bool IsDone    { get; protected set; } = true;
 
         protected DurableState(float duration)
         {
@@ -25,6 +25,11 @@ namespace Node
                 IsDone = true;
 
             Elapsed += Time.deltaTime;
+        }
+
+        public override void OnExit()
+        {
+            IsDone = true;
         }
     }
 }

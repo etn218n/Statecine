@@ -1,5 +1,6 @@
 ﻿public interface ICharacterAction
 {
+    void Set(bool value);
     bool Start   { get; }
     bool Perform { get; }
     bool Cancel  { get; }

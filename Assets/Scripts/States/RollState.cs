@@ -25,6 +25,8 @@ public class RollState : DurableState
 
     public override void OnExit()
     {
+        base.OnExit();
+        
         character.InAction = false;
         character.RB2D.gravityScale = defaultGravityScale;
     }
