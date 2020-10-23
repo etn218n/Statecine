@@ -1,183 +1,95 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Node
+namespace NodeCanvas
 {
-    public class FSM : INode
+    public class FSM : BaseFSM
     {
-        private HashSet<Transition> currentTransitionSet  = new HashSet<Transition>();
-        private HashSet<Transition> anyStateTransitionSet = new HashSet<Transition>();
+        public FSM(string name = "Untitled") : base(name)
+        {
+            this.AddTransition(currentNode, entryNode, () => true);
+        }
 
-        private readonly Stack<State> stateStack = new Stack<State>();
-        private readonly Dictionary<State, HashSet<Transition>> stateMap = new Dictionary<State, HashSet<Transition>>();
-
-        public State CurrentState { get; private set; } = new EmptyState();
-
-        public static State AnyState      { get; } = new EmptyState();
-        public static State PreviousState { get; } = new EmptyState();
-        
         public void Update()
         {
-            CurrentState.OnUpdate();
+            var qualifiedTransition = CheckForQualifiedTransition();
             
-            CheckTransitions();
+            if (qualifiedTransition != null)
+            {
+                currentNode.OnExit();
+                
+                if (qualifiedTransition.Destination == PreviousNode && nodeStack.Count >= 2)
+                {
+                    nodeStack.Pop();
+                    qualifiedTransition.Destination = nodeStack.Pop();
+                }
+                
+                SetCurrentNode(qualifiedTransition.Destination);
+                
+                currentNode.OnEnter();
+            }
+            
+            currentNode.OnUpdate();
         }
         
         public void FixedUpdate()
         {
-            CurrentState.OnFixedUpdate();
+            currentNode.OnFixedUpdate();
         }
 
-        private void CheckTransitions()
+        public void AddSubFSM(SubFSM subFSM)
         {
-            var qualifiedTransition = anyStateTransitionSet.FirstOrDefault(t => t.Condition() && t.Destination != CurrentState);
-
-            if (qualifiedTransition == null)
-                qualifiedTransition = currentTransitionSet.FirstOrDefault(t => t.Condition() && t.Destination != CurrentState);
-
-            if (qualifiedTransition != null)
+            if (nodeMap.ContainsKey(subFSM))
             {
-                CurrentState.OnExit();
-                
-                if (qualifiedTransition.Destination == PreviousState && stateStack.Count >= 2)
-                {
-                    stateStack.Pop();
-                    qualifiedTransition.Destination = stateStack.Pop();
-                }
-                
-                CurrentState = qualifiedTransition.Destination;
-                CurrentState.OnEnter();
-                
-                stateStack.Push(CurrentState);
-                currentTransitionSet = stateMap[CurrentState];
-
-                foreach (var transition in anyStateTransitionSet)
-                    transition.Source = CurrentState;
-            }
-        }
-
-        public void AddTransition(State source, State destination, Func<bool> condition)
-        {
-            var transition = new Transition(source, destination, condition);
-
-            if (!IsValidTransition(transition))
-                return;
-            
-            if (ContainSpecialState(transition))
-            {
-                HandleSpecialState(transition);
+                Debug.Log($"{name}: already contains {subFSM.Name}.");
                 return;
             }
             
-            if (!stateMap.ContainsKey(transition.Source))
-                stateMap.Add(transition.Source, new HashSet<Transition>());
-
-            if (!stateMap.ContainsKey(transition.Destination))
-                stateMap.Add(transition.Destination, new HashSet<Transition>());
+            nodeMap.Add(subFSM, new HashSet<Transition>());
+        }
+        
+        public override void SetEntry(INode node)
+        {
+            if (!nodeMap.ContainsKey(node))
+            {
+                Debug.Log($"{name}: entry node must be contained in this FSM.");
+                return;
+            }
             
-            stateMap[transition.Source].Add(transition);
+            entryNode = node;
+
+            Transition t = nodeMap[currentNode].FirstOrDefault();
+
+            if (t != null)
+            {
+                t.Destination = entryNode;
+                currentTransitionSet = nodeMap[currentNode];
+            }
         }
 
-        private bool IsValidTransition(Transition transition)
+        public override bool IsValidNode(INode node)
         {
-            if (transition.Source == null)
+            if (node == null)
             {
-                Debug.Log($"FSM: transition source can not be NULL");
+                Debug.Log($"{name}: node can not be NULL.");
                 return false;
             }
             
-            if (transition.Destination == null)
-            {
-                Debug.Log($"FSM: transition destination can not be NULL");
-                return false;
-            }
-            
-            if (transition.Source == PreviousState)
-            {
-                Debug.Log($"FSM: transition source can not be set to FSM.PreviousState");
-                return false;
-            }
-            
-            if (transition.Destination == AnyState)
-            {
-                Debug.Log($"FSM: transition destination can not be set to FSM.AnyState");
-                return false;
-            }
+            // check if node is owned by any SubFSM
+            IEnumerable<SubFSM> subs = from n in Nodes 
+                                       where n is SubFSM 
+                                       select n as SubFSM;
 
+            var subFSM = subs.FirstOrDefault(sub => sub.Nodes.Contains(node));
+
+            if (subFSM != null)
+            {
+                Debug.Log($"{name}: node is already owned by {subFSM}.");
+                return false;
+            }
+            
             return true;
         }
-
-        private bool ContainSpecialState(Transition transition)
-        {
-            if (transition.Source == AnyState)
-                return true;
-
-            return false;
-        }
-
-        private void HandleSpecialState(Transition transition)
-        {
-            anyStateTransitionSet.Add(transition);
-            
-            if (!stateMap.ContainsKey(transition.Destination))
-                stateMap.Add(transition.Destination, new HashSet<Transition>());
-        }
-
-        public int CountTransitionFrom(State source) => stateMap[source].Count;
-        
-        public void SetEntry(State state)
-        {
-            if(!stateMap.ContainsKey(state))
-                return;
-            
-            if (CurrentState is EmptyState)
-            {
-                stateStack.Push(state);
-                CurrentState = stateStack.Peek();
-                CurrentState.OnEnter();
-                currentTransitionSet = stateMap[state];
-            
-                foreach (var transition in anyStateTransitionSet)
-                    transition.Source = CurrentState;
-            }
-        }
-
-        public string HistoryString()
-        {
-            StringBuilder builder = new StringBuilder();
-            
-            foreach (var state in stateStack.Reverse())
-            {
-                builder.Append(state.ToString() + "-> ");
-            }
-
-            return builder.ToString();
-        }
-
-        public string MapString()
-        {
-            StringBuilder builder = new StringBuilder();
-
-            foreach (var key in stateMap.Keys)
-            {
-                builder.Append($"{key} -> ");
-                
-                foreach (var transition in stateMap[key])
-                {
-                    builder.Append(transition.Destination + ", ");
-                }
-
-                builder.Remove(builder.Length - 2, 2);
-
-                builder.Append("\n");
-            }
-            
-            return builder.ToString();
-        }
     }
-
-    public class EmptyState :State { }
 }

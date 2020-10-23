@@ -1,4 +1,4 @@
-﻿using Node;
+﻿using NodeCanvas;
 
 public class IdleState : State
 {

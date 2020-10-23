@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Node
+namespace NodeCanvas
 {
     public class DurableState : State
     {

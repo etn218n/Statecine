@@ -1,4 +1,4 @@
-﻿using Node;
+﻿using NodeCanvas;
 using UnityEngine;
 
 public class Adventurer : MonoBehaviour
@@ -147,8 +147,8 @@ public class Adventurer : MonoBehaviour
         fsm.AddTransition(punch3, run,  () => punch3.IsDone && command.MoveX.Perform && character.IsGrounded);
         
         // fsm.AddTransition(FSM.AnyState, dead, () => Input.GetKeyDown(KeyCode.D));
-        fsm.AddTransition(FSM.AnyState, knockdown, () => command.KnockDown.Start);
-        fsm.AddTransition(FSM.AnyState, fall,      () => character.IsFalling && !character.InAction && !character.IsDead);
+        fsm.AddTransition(fsm.AnyNode, knockdown, () => command.KnockDown.Start);
+        fsm.AddTransition(fsm.AnyNode, fall,      () => character.IsFalling && !character.InAction && !character.IsDead);
         
         fsm.AddTransition(knockdown, getup, () => (knockdown.IsDone && character.IsGrounded) && (command.MoveX.Perform || command.Jump.Start));
         

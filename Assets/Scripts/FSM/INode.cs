@@ -1,8 +1,10 @@
-﻿namespace Node
+﻿namespace NodeCanvas
 {
     public interface INode
     {
-        void Update();
-        void FixedUpdate();
+        void OnEnter();
+        void OnUpdate();
+        void OnFixedUpdate();
+        void OnExit();
     }
 }
