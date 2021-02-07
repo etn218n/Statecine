@@ -16,6 +16,107 @@ public class Adventurer : MonoBehaviour
 
     private void Start()
     {
+        
+        
+        var jump = new JumpState(character, command, 0.01f, true);
+        var doubleJump = new DoubleJumpState(character, command, 0.05f, true);
+        var roll = new RollState(character, 0.45f);
+        var fall = new FallState(character, command, true);
+        
+        var getup = new GetUpState(character, 0.5f);
+        var crouch = new CrouchState(character);
+        var crouchWalk = new CrouchWalkState(character, command);
+        // var dead = new DeadState(character);
+        var swordAttack1 = new SwordAttack1State(character, 0.35f);
+        var swordAttack2 = new SwordAttack2State(character, 0.45f);
+        var swordAttack3 = new SwordAttack3State(character, 0.45f);
+        var airSwordAttack1 = new AirSwordAttack1State(character, 0.35f);
+        var punch1 = new Punch1State(character, 0.4f);
+        var punch2 = new Punch2State(character, 0.4f);
+        var punch3 = new Punch3State(character, 0.4f);
+       
+        
+        
+        var knockdown = new KnockDownState(character, 0.4f);
+
+        var standingLocomotion = StandingLocomotion();
+        var movingLocomotion   = MovingLocomotion();
+
+        
+        var crouchLocomotion = new SubFSM(fsm, "Crouch");
+        crouchLocomotion.AddTransition(crouch, crouchWalk, () => command.MoveX.Perform);
+        crouchLocomotion.AddTransition(crouchWalk, crouch, () => command.MoveX.Cancel);
+        crouchLocomotion.SetEntry(crouch);
+        
+        fsm.AddTransition(standingLocomotion, crouchLocomotion, () => command.Crouch.Perform);
+        fsm.AddTransition(standingLocomotion, movingLocomotion, () => command.MoveX.Perform);
+        fsm.AddTransition(movingLocomotion, standingLocomotion, () => command.MoveX.Cancel && movingLocomotion.IsFinished);
+        fsm.AddTransition(movingLocomotion, crouchLocomotion,   () => command.Crouch.Perform && movingLocomotion.IsFinished);
+        fsm.AddTransition(crouchLocomotion, standingLocomotion, () => command.Crouch.Cancel);
+        fsm.SetEntry(standingLocomotion);
+    }
+
+    private SubFSM MovingLocomotion()
+    {
+        var run        = new RunState(character, command);
+        var swordRun   = new SwordRunState(character, command);
+        var sprint     = new SprintState(character, command);
+        var roll       = new RollState(character, 1f);
+        var crouchWalk = new CrouchWalkState(character, command);
+        
+        var moving = new SubFSM(fsm, "Moving");
+        
+        moving.AddTransition(moving.EntryNode, moving.ExitNode, () => command.MoveX.Cancel);
+        moving.AddTransition(moving.EntryNode, swordRun, () =>  character.IsEquipped);
+        moving.AddTransition(moving.EntryNode, run,      () => !character.IsEquipped);
+        
+        moving.AddTransition(run, moving.ExitNode, () => command.MoveX.Cancel);
+        moving.AddTransition(run, roll,   () => command.Roll.Perform);
+        moving.AddTransition(run, sprint, () => command.Sprint.Perform);
+        moving.AddTransition(run, crouchWalk, () => command.Crouch.Perform);
+        
+        moving.AddTransition(swordRun, moving.ExitNode, () => command.MoveX.Cancel);
+        moving.AddTransition(swordRun, roll,   () => command.Roll.Perform);
+        moving.AddTransition(swordRun, sprint, () => command.Sprint.Perform);
+        moving.AddTransition(swordRun, crouchWalk, () => command.Crouch.Perform);
+        
+        moving.AddTransition(sprint, moving.EntryNode, () => command.Sprint.Cancel);
+        moving.AddTransition(sprint, roll, () => command.Roll.Perform);
+        
+        moving.AddTransition(crouchWalk, moving.ExitNode,  () => command.MoveX.Cancel);
+        moving.AddTransition(crouchWalk, moving.EntryNode, () => command.Crouch.Cancel);
+        
+        moving.AddTransition(roll, moving.EntryNode, () => roll.IsDone);
+        
+        moving.SetEntry(moving.EntryNode);
+
+        return moving;
+    }
+
+    private SubFSM StandingLocomotion()
+    {
+        var idle        = new IdleState(character);
+        var crouch      = new CrouchState(character);
+        var swordIdle   = new SwordIdleState(character);
+        var drawSword   = new DrawSwordState(character, 0.4f);
+        var sheathSword = new SheathSwordState(character, 0.4f);
+        
+        var standing = new SubFSM(fsm, "Standing");
+        standing.AddTransition(standing.EntryNode, swordIdle, () => character.IsEquipped);
+        standing.AddTransition(standing.EntryNode, idle, () => !character.IsEquipped);
+        standing.AddTransition(standing.AnyNode, drawSword, () => command.DrawWeapon.Start && !character.IsEquipped);
+        standing.AddTransition(standing.AnyNode, sheathSword, () => command.SheathWeapon.Start && character.IsEquipped);
+        standing.AddTransition(idle,      crouch, () => command.Crouch.Perform);
+        standing.AddTransition(swordIdle, crouch, () => command.Crouch.Perform);
+        standing.AddTransition(drawSword, standing.EntryNode, () => drawSword.IsDone);
+        standing.AddTransition(sheathSword, standing.EntryNode, () => sheathSword.IsDone);
+        standing.SetEntry(standing.EntryNode);
+
+        return standing;
+    }
+
+    private void OldStart()
+    {
         var idle = new IdleState(character);
         var run  = new RunState(character, command);
         var jump = new JumpState(character, command, 0.01f, true);
@@ -39,6 +140,8 @@ public class Adventurer : MonoBehaviour
         var swordIdle   = new SwordIdleState(character);
         var swordRun    = new SwordRunState(character, command);
         var knockdown   = new KnockDownState(character, 0.4f);
+        
+        
         
         fsm.AddTransition(idle, run,  () => command.MoveX.Perform);
         fsm.AddTransition(idle, jump, () => command.Jump.Start);

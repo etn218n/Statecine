@@ -16,7 +16,11 @@ namespace NodeCanvas
 
             this.exitNode = new ActionState()
             {
-                EnterAction = () => this.IsFinished = true
+                EnterAction = () =>
+                {
+                    this.IsFinished = true;
+                    Debug.Log($"Exit {name}");
+                }
             };
         }
         
@@ -26,6 +30,8 @@ namespace NodeCanvas
             entryNode.OnUpdate();
 
             SetCurrentNode(entryNode);
+
+            IsFinished = false;
             
             OnUpdate(); // advance one update
         }
